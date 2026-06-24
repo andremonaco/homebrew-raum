@@ -1,9 +1,9 @@
 cask "raum" do
   arch arm: "aarch64", intel: "x64"
 
-  version "0.1.9"
-  sha256 arm:   "caaa65019fa2170a64bd4119a75cac003f705ddf9e12923a162437e58ee0ccf7",
-         intel: "500759e419af284ad703b34f084ca68907e448018974a9f31e8bc0f57bc208fb"
+  version "0.1.10"
+  sha256 arm:   "312ce6a2aad21ed954a7a9e082a983fefd11ae51f06f356a27ad341eb392ad01",
+         intel: "4a88f39ef54bffce524cf5fa2dd458c35a41887ab4eaea813efd34d15e7b5080"
 
   url "https://github.com/andremonaco/raum/releases/download/v#{version}/raum_#{version}_#{arch}.dmg"
   name "raum"
@@ -15,7 +15,7 @@ cask "raum" do
     strategy :github_latest
   end
 
-  depends_on macos: ">= :big_sur"
+  depends_on macos: :big_sur
   depends_on formula: "tmux"
 
   app "raum.app"
