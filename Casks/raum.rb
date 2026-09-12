@@ -1,9 +1,9 @@
 cask "raum" do
   arch arm: "aarch64", intel: "x64"
 
-  version "0.1.20"
-  sha256 arm:   "3fddc13c720a9c2a6586c7cbe58d0ede7bef9dd94441154e3dee94903b0ead5f",
-         intel: "adea765a62e061d34e959e36158e98b323e467b7116233fa100dd930d86ce7e4"
+  version "0.1.21"
+  sha256 arm:   "84b53cedcab988e8fa1555b0713437b0951e6dff0f6e2cd7d4a873a1596504f4",
+         intel: "e2cf064e1eeb15c6637f4b4e2d142aa0676c8e5028e822f49e1095aaa58cbd25"
 
   url "https://github.com/andremonaco/raum/releases/download/v#{version}/raum_#{version}_#{arch}.dmg"
   name "raum"
