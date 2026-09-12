@@ -1,9 +1,9 @@
 cask "raum" do
   arch arm: "aarch64", intel: "x64"
 
-  version "0.1.21"
-  sha256 arm:   "84b53cedcab988e8fa1555b0713437b0951e6dff0f6e2cd7d4a873a1596504f4",
-         intel: "e2cf064e1eeb15c6637f4b4e2d142aa0676c8e5028e822f49e1095aaa58cbd25"
+  version "0.1.22"
+  sha256 arm:   "4b99e8e23482d609ba80d4a529d4e9f32aa6ac16c87f8b2bdeecf8129c2bce29",
+         intel: "83a348451b79a516b2d3b4c45416e9736a0c7a1f39f7d70b6609add5f6119034"
 
   url "https://github.com/andremonaco/raum/releases/download/v#{version}/raum_#{version}_#{arch}.dmg"
   name "raum"
@@ -34,21 +34,16 @@ cask "raum" do
   # the whole upgrade rolls back: the user stays pinned to their installed
   # version until they delete the symlink by hand.
   #
-  # Drop the orphan first (preflight runs before any artifact is installed,
-  # whatever its position in this file). Only a symlink pointing into a
-  # raum.app bundle is touched — exactly the link we, or a manual DMG
-  # install, created — and the `binary` stanza recreates it immediately.
-  preflight do
-    stale_cli = Pathname("#{HOMEBREW_PREFIX}/bin/raum")
-    if stale_cli.symlink? && stale_cli.readlink.to_s.end_with?("raum.app/Contents/Resources/raum-cli")
-      begin
-        FileUtils.rm stale_cli
-      rescue Errno::EACCES, Errno::EPERM
-        # Not writable without sudo. Fall through: linking raises the error
-        # above, and `brew upgrade --cask --force raum` still gets through.
-        opoo "Could not remove the stale #{stale_cli} symlink; retry with --force if linking fails."
-      end
-    end
+  # Drop the orphan first (preflight steps run before any artifact is
+  # installed, whatever their position in this file). Only a symlink
+  # pointing into a raum.app bundle is touched — exactly the link we, or a
+  # manual DMG install, created — and the `binary` stanza recreates it
+  # immediately. Without `sudo:` the removal is best-effort: an unwritable
+  # prefix leaves the link in place and linking raises the error above,
+  # where `brew upgrade --cask --force raum` still gets through.
+  preflight_steps do
+    remove "bin/raum", base: :homebrew_prefix,
+           symlink_target_contains: "raum.app/Contents/Resources/raum-cli"
   end
 
   zap trash: [
